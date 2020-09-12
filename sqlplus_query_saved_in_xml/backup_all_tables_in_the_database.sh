@@ -35,7 +35,7 @@ BEGIN
   xmltext := DBMS_XMLGEN.getXML(xmlhdl);
   xml_epos := instr(xmltext,chr(10),xml_pos+1,row_number);
   WHILE xml_epos >0 LOOP  --xml文件大于50行的，每50行进行输出
-    lines := SUBSTR(xmltext,xml_pos+1,xml_epos-xml_pos-1);
+    lines := SUBSTR(xmltext,xml_pos+1,xml_epos-xml_pos);
   	DNMS_OUTPUT.put_line(lines);
   	xml_pos := xml_epos;
   	xml_epos := instr(xmltext,chr(10),xml_pos+1,row_number);
@@ -47,4 +47,5 @@ END;
 spool off;
 quit
 EOF
+sed -i '/^[[:space:]]*$/d' $xml_file_name
 done
